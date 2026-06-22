@@ -2370,7 +2370,7 @@ lik.msm <- function(params, ...)
   w <- args$msmdata$subject.weights
   if (!is.null(w)){
     lik0 <- Ccall.msm(params, do.what="lik.subj", ...)
-    lik < ifelse(lik0 == -Inf, -2*log(10^(-323)), lik0)
+    lik <- ifelse(lik0 == -Inf, -2*log(10^(-323)), lik0)
     wlik <- ifelse(w < 10^(-6), 0, w*lik)
     sum(wlik)
   }
