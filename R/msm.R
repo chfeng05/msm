@@ -2382,7 +2382,12 @@ grad.msm <- function(params, ...)
 {
   w <- list(...)$msmdata$subject.weights
   if (!is.null(w)){
-    deriv <- Ccall.msm(params, do.what="deriv.subj", ...) # npts x npar
+    lik0 <- Ccall.msm(params, do.what="lik.subj", ...)
+    bad <- lik0 == Inf
+  
+    deriv <- Ccall.msm(params, do.what="deriv.subj", ...)
+    deriv[bad, ] <- 0
+    
     wderiv <- apply(deriv, 2, function(d) {ifelse(w < 10^(-6), 0, w*d)})
     apply(wderiv, 2, sum)
   }
